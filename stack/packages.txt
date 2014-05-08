@@ -34,8 +34,8 @@ openssh-client
 openssh-server
 pigz
 python-dev
-ruby1.9.1-dev
-rubygems
+python-software-properties
+software-properties-common
 socat
 syslinux
 sqlite3

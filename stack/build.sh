@@ -15,6 +15,10 @@ apt-get update
 
 xargs apt-get install -y --force-yes < packages.txt
 
+add-apt-repository -y ppa:brightbox/ruby-ng
+apt-get update
+apt-get install -y ruby2.1
+
 cd /
 rm -rf /var/cache/apt/archives/*.deb
 rm -rf /var/lib/apt/lists/*
