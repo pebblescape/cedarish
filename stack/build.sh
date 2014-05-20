@@ -4,23 +4,11 @@ exec 2>&1
 set -e
 set -x
 
-cat > /etc/apt/sources.list <<EOF
-deb http://archive.ubuntu.com/ubuntu trusty main
-deb http://archive.ubuntu.com/ubuntu trusty-security main
-deb http://archive.ubuntu.com/ubuntu trusty-updates main
-deb http://archive.ubuntu.com/ubuntu trusty universe
-deb http://archive.ubuntu.com/ubuntu trusty-updates universe
-EOF
-
+# install packages
 apt-get update
-
 xargs apt-get install -y --force-yes < packages.txt
 
-# initctl hack
-dpkg-divert --local --rename --add /sbin/initctl
-sh -c "test -f /sbin/initctl || ln -s /bin/true /sbin/initctl"
-
-# install ruby 2.1.2
+# install ruby 2.1.2-discourse
 echo 'gem: --no-document' >> /usr/local/etc/gemrc
 mkdir /src && cd /src && git clone https://github.com/sstephenson/ruby-build.git
 cd /src/ruby-build && ./install.sh
