@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:quantal
 MAINTAINER krisrang "mail@rang.ee"
 
 ENV DEBIAN_FRONTEND noninteractive
