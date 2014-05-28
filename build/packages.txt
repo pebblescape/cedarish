@@ -21,14 +21,12 @@ libmagickcore-dev
 libmagickwand-dev
 libmysqlclient-dev
 libpq-dev
-libreadline-dev
 libsqlite3-dev
 libssl-dev
 libssl0.9.8
 libtool
 libxml2-dev
 libxslt-dev
-libyaml-dev
 mercurial
 netcat-openbsd
 nodejs
@@ -41,8 +39,9 @@ pngcrush
 python-dev
 python-software-properties
 software-properties-common
+ruby1.9.1-dev
+rubygems
 socat
-supervisor
 syslinux
 sqlite3
 telnet
