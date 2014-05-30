@@ -39,8 +39,7 @@ pngcrush
 python-dev
 python-software-properties
 software-properties-common
-ruby1.9.1-dev
-rubygems
+ruby
 socat
 syslinux
 sqlite3
