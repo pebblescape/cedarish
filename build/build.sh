@@ -4,7 +4,8 @@ exec 2>&1
 set -e
 set -x
 
-minimal_apt_get_install='apt-get install -y --no-install-recommends'
+# apt_get_install='apt-get install -y --no-install-recommends'
+apt_get_install='apt-get install -y'
 
 ## Temporarily disable dpkg fsync to make building faster.
 echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02apt-speedup
@@ -14,7 +15,7 @@ sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
 sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
 apt-get update
 
-$minimal_apt_get_install apt-transport-https ca-certificates
+$apt_get_install apt-transport-https ca-certificates
 xargs apt-get install -y --force-yes < packages.txt
 
 ## Upgrade all packages
@@ -33,14 +34,14 @@ dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
 ## Fix locale.
-$minimal_apt_get_install language-pack-en
+$apt_get_install language-pack-en
 locale-gen en_US
 
 ## Install runit.
-$minimal_apt_get_install runit
+$apt_get_install runit
 
 ## Install a syslog daemon.
-$minimal_apt_get_install syslog-ng-core
+$apt_get_install syslog-ng-core
 mkdir /etc/service/syslog-ng
 cp /build/runit/syslog-ng /etc/service/syslog-ng/run
 mkdir -p /var/lib/syslog-ng
@@ -50,10 +51,10 @@ cp /build/config/syslog_ng_default /etc/default/syslog-ng
 sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
 
 ## Install logrotate.
-$minimal_apt_get_install logrotate
+$apt_get_install logrotate
 
 ## Install cron daemon.
-$minimal_apt_get_install cron
+$apt_get_install cron
 mkdir /etc/service/cron
 cp /build/runit/cron /etc/service/cron/run
 
@@ -62,7 +63,7 @@ cp /build/runit/cron /etc/service/cron/run
 rm -f /etc/cron.daily/standard
 
 ## Often used tools.
-$minimal_apt_get_install curl less nano vim psmisc
+$apt_get_install curl less nano vim psmisc
 
 ## Cleanup
 apt-get clean

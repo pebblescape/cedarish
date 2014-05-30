@@ -21,6 +21,9 @@ libmagickcore-dev
 libmagickwand-dev
 libmysqlclient-dev
 libpq-dev
+libreadline-dev
+libreadline5-dev
+libreadline-gplv2-dev
 libsqlite3-dev
 libssl-dev
 libssl0.9.8
