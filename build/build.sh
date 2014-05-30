@@ -19,7 +19,7 @@ $apt_get_install apt-transport-https ca-certificates
 xargs apt-get install -y --force-yes < packages.txt
 
 ## Upgrade all packages
-apt-get dist-upgrade -y --no-install-recommends
+apt-get dist-upgrade -y #--no-install-recommends
 
 ## Fix some issues with APT packages.
 ## See https://github.com/dotcloud/docker/issues/1024
