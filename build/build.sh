@@ -53,6 +53,10 @@ wget http://www.canonware.com/download/jemalloc/jemalloc-3.4.1.tar.bz2
 tar -xvjf jemalloc-3.4.1.tar.bz2 && cd jemalloc-3.4.1 && ./configure && make
 mv lib/libjemalloc.so.1 /usr/lib && cd / && rm -rf /jemalloc
 
+## docker client
+wget https://get.docker.io/builds/Linux/x86_64/docker-latest -O /usr/local/bin/docker
+chmod +x /usr/local/bin/docker
+
 ## Fix locale.
 $apt_get_install language-pack-en
 locale-gen en_US
