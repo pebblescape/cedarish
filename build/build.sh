@@ -33,24 +33,21 @@ ln -sf /bin/true /sbin/initctl
 dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
-## Install ruby 2.1.2-discourse
+## Install ruby 2.1.5
 echo 'gem: --no-document' >> /usr/local/etc/gemrc
 mkdir /src && cd /src && git clone https://github.com/sstephenson/ruby-build.git
 cd /src/ruby-build && ./install.sh
 cd / && rm -rf /src/ruby-build
-echo install_package "yaml-0.1.6" "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz#5fe00cda18ca5daeb43762b80c38e06e" --if needs_yaml > /src/2.1.2.discourse
-echo install_package "openssl-1.0.1g" "https://www.openssl.org/source/openssl-1.0.1g.tar.gz#de62b43dfcd858e66a74bee1c834e959" mac_openssl --if has_broken_mac_openssl >> /src/2.1.2.discourse
-echo install_package "ruby-v_2_1_2_discourse" "https://github.com/SamSaffron/ruby/archive/v_2_1_2_discourse.tar.gz#98741e3cbfd00ae2931b2c0edb0f0698" ldflags_dirs standard verify_openssl >> /src/2.1.2.discourse
 apt-get -y install ruby bison
-ruby-build /src/2.1.2.discourse /usr/local
+ruby-build 2.1.5 /usr/local
 apt-get -y remove ruby1.8
 gem update --system
 gem install bundler
 
 ## jemalloc
 mkdir /jemalloc && cd /jemalloc
-wget http://www.canonware.com/download/jemalloc/jemalloc-3.4.1.tar.bz2
-tar -xvjf jemalloc-3.4.1.tar.bz2 && cd jemalloc-3.4.1 && ./configure && make
+wget http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2
+tar -xvjf jemalloc-3.6.0.tar.bz2 && cd jemalloc-3.6.0 && ./configure && make
 mv lib/libjemalloc.so.1 /usr/lib && cd / && rm -rf /jemalloc
 
 ## docker client
@@ -61,30 +58,30 @@ chmod +x /usr/local/bin/docker
 $apt_get_install language-pack-en
 locale-gen en_US
 
-## Install runit.
-$apt_get_install runit
+# ## Install runit.
+# $apt_get_install runit
 
-## Install a syslog daemon.
-$apt_get_install syslog-ng-core
-mkdir /etc/service/syslog-ng
-cp /build/runit/syslog-ng /etc/service/syslog-ng/run
-mkdir -p /var/lib/syslog-ng
-cp /build/config/syslog_ng_default /etc/default/syslog-ng
-# Replace the system() source because inside Docker we
-# can't access /proc/kmsg.
-sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
+# ## Install a syslog daemon.
+# $apt_get_install syslog-ng-core
+# mkdir /etc/service/syslog-ng
+# cp /build/runit/syslog-ng /etc/service/syslog-ng/run
+# mkdir -p /var/lib/syslog-ng
+# cp /build/config/syslog_ng_default /etc/default/syslog-ng
+# # Replace the system() source because inside Docker we
+# # can't access /proc/kmsg.
+# sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
 
 ## Install logrotate.
 $apt_get_install logrotate
 
-## Install cron daemon.
-$apt_get_install cron
-mkdir /etc/service/cron
-cp /build/runit/cron /etc/service/cron/run
+# ## Install cron daemon.
+# $apt_get_install cron
+# mkdir /etc/service/cron
+# cp /build/runit/cron /etc/service/cron/run
 
-## Remove useless cron entries.
-# Checks for lost+found and scans for mtab.
-rm -f /etc/cron.daily/standard
+# ## Remove useless cron entries.
+# # Checks for lost+found and scans for mtab.
+# rm -f /etc/cron.daily/standard
 
 ## Often used tools.
 $apt_get_install curl less nano vim psmisc
@@ -128,6 +125,7 @@ echo -e "\nInstalled versions:"
   ruby -v
   gem -v
   python -V
+  go version
 ) | sed -u "s/^/  /"
 
 
