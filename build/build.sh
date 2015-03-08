@@ -38,7 +38,6 @@ echo 'gem: --no-document' >> /usr/local/etc/gemrc
 mkdir /src && cd /src && git clone https://github.com/sstephenson/ruby-build.git
 cd /src/ruby-build && ./install.sh
 cd / && rm -rf /src/ruby-build
-apt-get -y install ruby bison
 ruby-build 2.2.1 /usr/local
 apt-get -y remove ruby1.8
 gem update --system
@@ -58,33 +57,34 @@ chmod +x /usr/local/bin/docker
 $apt_get_install language-pack-en
 locale-gen en_US
 
-## Install runit.
-$apt_get_install runit
+## supervisord
+$apt_get_install supervisor
+mkdir -p /var/log/supervisor
 
-## Install a syslog daemon.
-$apt_get_install syslog-ng-core
-mkdir /etc/service/syslog-ng
-cp /build/runit/syslog-ng /etc/service/syslog-ng/run
-mkdir -p /var/lib/syslog-ng
-cp /build/config/syslog_ng_default /etc/default/syslog-ng
-# Replace the system() source because inside Docker we
-# can't access /proc/kmsg.
-sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
+# ## Install runit.
+# $apt_get_install runit
 
-## Install logrotate.
-$apt_get_install logrotate
+# ## Install a syslog daemon.
+# $apt_get_install syslog-ng-core
+# mkdir /etc/service/syslog-ng
+# cp /build/runit/syslog-ng /etc/service/syslog-ng/run
+# mkdir -p /var/lib/syslog-ng
+# cp /build/config/syslog_ng_default /etc/default/syslog-ng
+# # Replace the system() source because inside Docker we
+# # can't access /proc/kmsg.
+# sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/syslog-ng.conf
 
-## Install cron daemon.
-$apt_get_install cron
-mkdir /etc/service/cron
-cp /build/runit/cron /etc/service/cron/run
+# ## Install logrotate.
+# $apt_get_install logrotate
 
-## Remove useless cron entries.
-# Checks for lost+found and scans for mtab.
-rm -f /etc/cron.daily/standard
+# ## Install cron daemon.
+# $apt_get_install cron
+# mkdir /etc/service/cron
+# cp /build/runit/cron /etc/service/cron/run
 
-## Often used tools.
-$apt_get_install curl less nano vim psmisc
+# ## Remove useless cron entries.
+# # Checks for lost+found and scans for mtab.
+# rm -f /etc/cron.daily/standard
 
 ## Cleanup
 apt-get clean
@@ -124,6 +124,7 @@ echo -e "\nInstalled versions:"
   java -version
   ruby -v
   gem -v
+  bundle -v
   python -V
   go version
 ) | sed -u "s/^/  /"

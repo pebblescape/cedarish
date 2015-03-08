@@ -9,8 +9,10 @@ ed
 git
 golang
 graphicsmagick
+htop
 imagemagick
 iputils-tracepath
+less
 libcurl4-openssl-dev
 libevent-dev
 libffi-dev
@@ -31,6 +33,7 @@ libtool
 libxml2-dev
 libxslt-dev
 mercurial
+nano
 netcat-openbsd
 nodejs
 openjdk-6-jdk
@@ -47,5 +50,6 @@ socat
 syslinux
 sqlite3
 telnet
+vim
 wget
 zlib1g-dev
