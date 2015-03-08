@@ -33,13 +33,13 @@ ln -sf /bin/true /sbin/initctl
 dpkg-divert --local --rename --add /usr/bin/ischroot
 ln -sf /bin/true /usr/bin/ischroot
 
-## Install ruby 2.1.5
+## Install ruby 2.2.1
 echo 'gem: --no-document' >> /usr/local/etc/gemrc
 mkdir /src && cd /src && git clone https://github.com/sstephenson/ruby-build.git
 cd /src/ruby-build && ./install.sh
 cd / && rm -rf /src/ruby-build
 apt-get -y install ruby bison
-ruby-build 2.1.5 /usr/local
+ruby-build 2.2.1 /usr/local
 apt-get -y remove ruby1.8
 gem update --system
 gem install bundler
