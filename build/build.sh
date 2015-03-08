@@ -61,8 +61,8 @@ locale-gen en_US
 $apt_get_install supervisor
 mkdir -p /var/log/supervisor
 
-# ## Install runit.
-# $apt_get_install runit
+## Install runit.
+$apt_get_install runit
 
 # ## Install a syslog daemon.
 # $apt_get_install syslog-ng-core
