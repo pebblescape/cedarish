@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C
 ENV INITRD No
 
-RUN mkdir /build
-ADD ./build/ /build
-RUN cd /build && ./build.sh
+ADD ./build /build
+RUN /build/build.sh
+
+CMD ["/usr/bin/runsvdir", "-P", "/etc/service"]

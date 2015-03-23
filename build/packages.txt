@@ -2,6 +2,7 @@ autoconf
 bind9-host
 bison
 build-essential
+cron
 curl
 daemontools
 dnsutils
