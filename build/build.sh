@@ -58,6 +58,7 @@ mkdir -p /var/log/supervisor
 
 ## Install runit.
 $minimal_apt_get_install runit
+mkdir /etc/services-available
 
 ## Install a syslog daemon.
 $minimal_apt_get_install syslog-ng-core
@@ -81,9 +82,9 @@ cp /build/config/logrotate_syslogng /etc/logrotate.d/syslog-ng
 
 ## Install cron daemon.
 $minimal_apt_get_install cron
-mkdir /etc/service/cron
+mkdir /etc/services-available/cron
 chmod 600 /etc/crontab
-cp /build/runit/cron /etc/service/cron/run
+cp /build/runit/cron /etc/services-available/cron/run
 
 ## Remove useless cron entries.
 # Checks for lost+found and scans for mtab.
