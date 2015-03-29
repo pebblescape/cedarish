@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 set -x
 
@@ -20,9 +21,14 @@ mkdir -p /etc/container_environment
 echo -n no > /etc/container_environment/INITRD
 
 ## Enable Ubuntu Universe and Multiverse.
-sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
-sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
+cat > /etc/apt/sources.list <<EOF
+deb http://archive.ubuntu.com/ubuntu trusty main
+deb http://archive.ubuntu.com/ubuntu trusty-security main
+deb http://archive.ubuntu.com/ubuntu trusty-updates main
+deb http://archive.ubuntu.com/ubuntu trusty universe
+EOF
 apt-get update
+apt-get upgrade -y --force-yes
 
 ## Fix some issues with APT packages.
 ## See https://github.com/dotcloud/docker/issues/1024
@@ -46,7 +52,11 @@ $minimal_apt_get_install software-properties-common
 apt-get dist-upgrade -y --no-install-recommends
 
 ## Fix locale.
-$minimal_apt_get_install language-pack-en
+apt-cache search language-pack \
+    | cut -d ' ' -f 1 \
+    | grep -v '^language\-pack\-\(gnome\|kde\)\-' \
+    | grep -v '\-base$' \
+    | xargs apt-get install -y --force-yes --no-install-recommends
 locale-gen en_US
 update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 echo -n en_US.UTF-8 > /etc/container_environment/LANG
@@ -115,14 +125,14 @@ chmod +x /usr/local/bin/docker
 
 ## Cleanup
 apt-get clean
+
+cd /
 rm -rf /build
 rm -rf /tmp/* /var/tmp/*
 rm -rf /var/lib/apt/lists/*
+rm -rf /var/cache/apt/archives/*.deb
 rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup
-
 rm -f /etc/ssh/ssh_host_*
-
-cd /
 
 # remove SUID and SGID flags from all binaries
 function pruned_find() {
