@@ -65,6 +65,7 @@ mkdir -p /var/log/supervisor
 ## Install runit.
 $minimal_apt_get_install runit
 mkdir /etc/services-available
+cp /build/runit-wrapper /bin/runit-wrapper
 
 ## Install a syslog daemon.
 $minimal_apt_get_install syslog-ng-core
